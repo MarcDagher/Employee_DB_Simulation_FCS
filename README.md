@@ -1,1 +1,1 @@
-# Mid-Term-Project
+Employee Database Python Project
