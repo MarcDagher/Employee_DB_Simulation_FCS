@@ -67,7 +67,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             print()
             return GreetUser(dict_of_employees)
         if password == "admin123123":
-            print("Admin's Menu") ############# RETURN ADMIN'S MENU ############
+            return AdminMenu(dict_of_employees)############# RETURN ADMIN'S MENU ############
         
     elif username in list_of_names: # if user
         count = 1
@@ -82,7 +82,65 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             return GreetUser(dict_of_employees)
         if password == "":
             print("Hi,", username) ############## RETURN USER'S MENU ##############
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
 
-            
+    def More_Actions(dict_of_employees): # O(n) where n is the number of times it takes the user to answer correctly
+        more_actions = input("Would you like to do anything else? ")
+        while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no":
+            print()
+            print("Wrong entry! Answer yes or no.")
+            more_actions = input("Would you like to do anything else? ")
+        
+        if more_actions == "Yes" or more_actions == "yes":
+            print()
+            return AdminMenu(dict_of_employees)
+        elif more_actions == "No" or more_actions == "no":
+            print()
+            print("Goodbye :)")
+
+    def Display_Stats(dict_of_employees): # O(1) since user doesn't have any inputs in this funcction so its a constant. Worst case is if the dictionary is super long.
+        males = 0
+        females = 0
+        total = len(dict_of_employees)
+        for i in dict_of_employees:
+            if dict_of_employees[i]["gender"] == "male" or dict_of_employees[i]["gender"] == "Male":
+                males += 1
+            elif dict_of_employees[i]["gender"] == "female" or dict_of_employees[i]["gender"] == "Female":
+                females += 1
+        perc_of_males = (males/total)*100
+        perc_of_females = (females/total)*100
+        print("In the list of employees provided, {} are males and {} are females.".format(males, females))
+        print("Your company is currently", perc_of_males, "% males and", perc_of_females,"%", "females")
+        return More_Actions(dict_of_employees)
+
+    # print(dict_of_employees)
+    # print(list_of_names)
+    print("Welcome Admin!")  # display menu items
+    print()
+    print("""
+        1. Display Stats
+        2. Add Employee
+        3. Display Employees
+        4. Change Employee Salary
+        5. Remove Employee
+        6. Raise Salary
+        7. Exit""")
+    print()
+    action = input("What would you like to do? ") # user input command
+    while action.isdigit() == False or int(action) not in range(1, 8) : # if choice is not a digit or not in the menu
+        if action.isdigit() == False:
+            print("Please choose a number between 1 and 7.")
+            print()
+            action = input("What would you like to do? ")
+        elif int(action) not in range(1, 8):
+            print("Make sure the number chosen is in the menu list!")
+            print()
+            action = input("What would you like to do? ")
+    
+    if action == "1":
+        return Display_Stats(dict_of_employees)
+
+
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
