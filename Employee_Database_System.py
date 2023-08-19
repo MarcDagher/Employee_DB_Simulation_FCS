@@ -157,7 +157,27 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
 
         dict_of_employees[id] = {'name': name, 'date': timestamp, 'gender': gender, 'salary': salary} # add emp to dictionary
         return More_Actions(dict_of_employees)
-         
+    
+    def Display_Employees(dict_of_employees): # O(n**2) where n is the length of the entire list, which worst case looping over the whole list
+        list_of_timestamps = []
+        for i in dict_of_employees: # O(n)
+            time = dict_of_employees[i]["date"]
+            list_of_timestamps.append(time)
+
+        list_of_timestamps.sort() # O(nlogn)
+        list_of_timestamps.reverse()
+
+        for i in list_of_timestamps: #O(n**2)
+            for j in dict_of_employees:
+                if i == dict_of_employees[j]["date"]:
+                    id = j
+                    name = dict_of_employees[j]["name"]
+                    date = dict_of_employees[j]["date"]
+                    gender = dict_of_employees[j]["gender"]
+                    salary = dict_of_employees[j]["salary"]
+                    print("{}, name: {}, date: {}, gender: {}, salary: {}".format(id, name, date, gender, salary), end="\n")
+        print()
+        return More_Actions(dict_of_employees)
 
     # print(dict_of_employees)
     # print(list_of_names)
@@ -187,5 +207,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Display_Stats(dict_of_employees)
     elif action == "2": 
         return Add_Employee(dict_of_employees)
+    elif action == "3":
+        return Display_Employees(dict_of_employees)
+    
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
