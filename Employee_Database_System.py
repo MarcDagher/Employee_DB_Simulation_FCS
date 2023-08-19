@@ -1,6 +1,5 @@
 from datetime import datetime
-#C:\\Users\Dagher\Desktop\employee file
-
+# file handling reference 1 and 2
 def InputPath(): # Time Complexity is O(n) => the code depends on the user's file input
 
   ## STEP 1: Receive input file and OPEN
@@ -31,7 +30,6 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
   print("Enter Username and Password")
   return dictionary_of_employees
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # STEP 3: GREET USER and TAKE USERNAME + PASSWORD
 
 def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Complexity O(n) where n is the input username and pass
@@ -68,7 +66,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             print()
             return GreetUser(dict_of_employees)
         if password == "admin123123":
-            return AdminMenu(dict_of_employees)############# RETURN ADMIN'S MENU ############
+            return AdminMenu(dict_of_employees) ############# STEP 4: RETURN ADMIN'S MENU ############
         
     elif username in list_of_names: # if user
         count = 1
@@ -82,7 +80,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             print()
             return GreetUser(dict_of_employees)
         if password == "":
-            print("Hi,", username) ############## RETURN USER'S MENU ##############
+            print("Hi,", username) ############## STEP 4: RETURN USER'S MENU ##############
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
 
@@ -115,6 +113,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         print("Your company is currently {}% males and {}% females".format(perc_of_males, perc_of_females))
         return More_Actions(dict_of_employees)
     
+    # References for formatted string syntax numbers 3,4, and 5
     def Add_Employee(dict_of_employees): # O(n) where n is the number of tries it takes the user to pass
         id = 'emp{0:03d}'.format(len(dict_of_employees) + 1) 
         now = datetime.now()
@@ -159,17 +158,17 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return More_Actions(dict_of_employees)
     
     def Display_Employees(dict_of_employees): # O(n**2) where n is the length of the entire list, which worst case looping over the whole list
-        list_of_timestamps = []
+        list_of_timestamps = [] # collect the time of joining of each employee
         for i in dict_of_employees: # O(n)
             time = dict_of_employees[i]["date"]
-            list_of_timestamps.append(time)
+            list_of_timestamps.append(time) 
+        # time complexity reference number 6
+        list_of_timestamps.sort() # O(nlogn) sort the time from smallest to greatest
+        list_of_timestamps.reverse() # reverse the list => greates to smallest (newest to oldest employee)
 
-        list_of_timestamps.sort() # O(nlogn)
-        list_of_timestamps.reverse()
-
-        for i in list_of_timestamps: #O(n**2)
-            for j in dict_of_employees:
-                if i == dict_of_employees[j]["date"]:
+        for i in list_of_timestamps: #O(n**2) loop over the timestamps
+            for j in dict_of_employees: # loop over the IDs of the main dictionary
+                if i == dict_of_employees[j]["date"]: # print the details
                     id = j
                     name = dict_of_employees[j]["name"]
                     date = dict_of_employees[j]["date"]
@@ -177,6 +176,27 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
                     salary = dict_of_employees[j]["salary"]
                     print("{}, name: {}, date: {}, gender: {}, salary: {}".format(id, name, date, gender, salary), end="\n")
         print()
+        return More_Actions(dict_of_employees)
+    
+    def Change_Employee_Salary(dict_of_employees): # O(n) where n is the number of times it takes the user to give  the correct input
+        employee = input("Choose employee ID: ") # choose ID => O(n)
+        list_of_keys = dict_of_employees.keys()
+
+        while employee not in list_of_keys: # Check if ID is in the list of keys => O(n) worst case is that user doesnt get it right
+            print("Employee ID not found.")
+            print("Make sure to input the right ID.")
+            print()
+            employee = input("Choose employee ID: ")
+        if employee in list_of_keys: 
+            new_salary = input("New Salary: ") # If yes choose new salary => O(n) worst case is that user doesnt get it right
+            while new_salary.isdigit() == False: 
+                if new_salary.isdigit() == False:
+                    print()
+                    print("Invalid entry!")
+                    new_salary = input("New Salary: ")
+
+            dict_of_employees[employee]["salary"] = new_salary # store new value of salary
+        print(dict_of_employees)
         return More_Actions(dict_of_employees)
 
     # print(dict_of_employees)
@@ -209,6 +229,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Add_Employee(dict_of_employees)
     elif action == "3":
         return Display_Employees(dict_of_employees)
+    elif action == "4":
+        return Change_Employee_Salary(dict_of_employees)
     
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
