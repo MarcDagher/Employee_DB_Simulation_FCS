@@ -8,25 +8,21 @@
 # - go back to the beginninning of menu 
 
 # C:\Users\Dagher\Desktop\employee file
+dict1 = {
+'emp001': {'name': 'cdaoud', 'date': '20220802', 'gender': 'male', 'salary': '12000'}
+}
 
-## STEP 1: Receive input file and OPEN
+list1 = ['cdaoud', 'manuella', 'jsmith', 'akim', 'lparker']
+name = input("hi: ")
+while name not in list1:
+  name = input("hi: ")
 
-path = input("Insert Employee File location: ") # determine the file's path
-file_path = path + ".txt" # add the file's extention to complete path
+print("Name is found")
 
-file = open(file_path, "r") 
-
-## STEP 2: Store file's info in dictionary
-list_of_data = [] # stores distributed info. but list contains a list of one single string
-
-for i in file:
-    list_of_data.append([i.strip("\n")])
-    
-list_for_dict = []
-
-for i in list_of_data: # loop over single strings and divide them
-    info = i[0].strip(",") # remove commas
-    # list_for_dict.append(info.split(", ")) 
-    print(i)
-
-# print(list_for_dict)
+# dict_of_employees = {
+# 'emp001': {'name': 'cdaoud', 'date': '20220802', 'gender': 'male', 'salary': '12000'}, 
+# 'emp002': {'name': 'manuella', 'date': '20220803', 'gender': 'female', 'salary': '1200'}, 
+# 'emp003': {'name': 'jsmith', 'date': '20220804', 'gender': 'male', 'salary': '15000'}, 
+# 'emp004': {'name': 'akim', 'date': '20220805', 'gender': 'male', 'salary': '10500'}, 
+# 'emp005': {'name': 'lparker', 'date': '20220806', 'gender': 'female', 'salary': '13000'}
+# }
