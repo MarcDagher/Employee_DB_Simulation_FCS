@@ -1,3 +1,4 @@
+from datetime import datetime
 #C:\\Users\Dagher\Desktop\employee file
 
 def InputPath(): # Time Complexity is O(n) => the code depends on the user's file input
@@ -108,11 +109,55 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
                 males += 1
             elif dict_of_employees[i]["gender"] == "female" or dict_of_employees[i]["gender"] == "Female":
                 females += 1
-        perc_of_males = (males/total)*100
-        perc_of_females = (females/total)*100
+        perc_of_males = round((males/total)*100, 2)
+        perc_of_females = round((females/total)*100, 2)
         print("In the list of employees provided, {} are males and {} are females.".format(males, females))
-        print("Your company is currently", perc_of_males, "% males and", perc_of_females,"%", "females")
+        print("Your company is currently {}% males and {}% females".format(perc_of_males, perc_of_females))
         return More_Actions(dict_of_employees)
+    
+    def Add_Employee(dict_of_employees): # O(n) where n is the number of tries it takes the user to pass
+        id = 'emp{0:03d}'.format(len(dict_of_employees) + 1) 
+        now = datetime.now()
+        timestamp = now.strftime("%Y%m%d")
+
+        name = input("Employee name: ")
+        while len(name) > 20 or name.isdigit():
+            if len(name) > 20:
+                print()
+                print("Name should be maximum 20 characters.")
+                name = input("Employee name: ")
+                print()
+            elif name.isdigit():
+                print()
+                print("Name should not be a number.")
+                name = input("Employee name: ")
+                print()
+
+
+        gender = input("Gender: [Answer male or female] ")
+        while gender != "Male" and gender != "male" and gender != "Female" and gender != "female":
+            print()
+            print("Invalid entry! Enter male or female.")
+            gender = input("Gender: [Answer male or female] ")
+            print()
+
+
+        salary = input("Salary: ") 
+        while salary.isdigit() != True or int(salary) > 99999999:
+            if salary.isdigit() != True:
+                print()
+                print("Salary must be a number.")
+                salary = input("Salary: ") 
+                print()
+            elif salary.isdigit() and int(salary) > 99999999:
+                print()
+                print("Salary must be less than that.")
+                salary = input("Salary: ") 
+                print()
+
+        dict_of_employees[id] = {'name': name, 'date': timestamp, 'gender': gender, 'salary': salary} # add emp to dictionary
+        return More_Actions(dict_of_employees)
+         
 
     # print(dict_of_employees)
     # print(list_of_names)
@@ -140,7 +185,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
     
     if action == "1":
         return Display_Stats(dict_of_employees)
-
-
+    elif action == "2": 
+        return Add_Employee(dict_of_employees)
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
