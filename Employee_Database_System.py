@@ -198,7 +198,21 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
             dict_of_employees[employee]["salary"] = new_salary # store new value of salary
         print(dict_of_employees)
         return More_Actions(dict_of_employees)
+    
+    def Remove_Employee(dict_of_employees): # Time Complexity => O(n) where n is the number of times it takes the user to input correctly
+        employee = input("Choose employee ID: ") # choose ID => O(n)
+        list_of_keys = dict_of_employees.keys()
 
+        while employee not in list_of_keys: # Check if ID is in the list of keys => O(n) worst case is that user doesnt get it right
+            print("Employee ID not found.")
+            print("Make sure to input the right ID.")
+            print()
+            employee = input("Choose employee ID: ")
+        if employee in list_of_keys:
+            dict_of_employees.pop(employee)
+        print(dict_of_employees)
+        return More_Actions(dict_of_employees)
+    
     # print(dict_of_employees)
     # print(list_of_names)
     print("Welcome Admin!")  # display menu items
@@ -222,6 +236,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
             print("Make sure the number chosen is in the menu list!")
             print()
             action = input("What would you like to do? ")
+        
     
     if action == "1":
         return Display_Stats(dict_of_employees)
@@ -231,6 +246,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Display_Employees(dict_of_employees)
     elif action == "4":
         return Change_Employee_Salary(dict_of_employees)
+    elif action == "5":
+        return Remove_Employee(dict_of_employees)
     
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
