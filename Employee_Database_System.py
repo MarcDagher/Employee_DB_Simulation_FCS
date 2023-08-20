@@ -26,6 +26,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
       salary = i[4]
       dictionary_of_employees[id] = {"name" : name, "date" : date, "gender" : gender, "salary" : salary}
   print("File saved.")
+  file.close() # Close file
   print()
   print("Enter Username and Password")
   return dictionary_of_employees
@@ -94,9 +95,25 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         if more_actions == "Yes" or more_actions == "yes":
             print()
             return AdminMenu(dict_of_employees)
+        
         elif more_actions == "No" or more_actions == "no":
             print()
-            print("Goodbye :)")
+            confirm = input("Are you sure you want to exit? ")
+            while confirm != "Yes" and confirm != "yes" and confirm != "No" and confirm != "no":
+                print()
+                print("Wrong entry! Answer yes or no.")
+                confirm = input("Are you sure you want to exit? ")
+        
+            if confirm == "Yes" or confirm == "yes":
+                print()
+                print("Changes Saved.")
+                print("Goodbye :)")
+                print("exit and save code") ##### exit and save file
+            elif confirm == "No" or confirm == "no":
+                print()
+                return AdminMenu(dict_of_employees)
+
+                
 
     def Display_Stats(dict_of_employees): # O(1) since user doesn't have any inputs in this funcction so its a constant. Worst case is if the dictionary is super long.
         males = 0
@@ -111,6 +128,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         perc_of_females = round((females/total)*100, 2)
         print("In the list of employees provided, {} are males and {} are females.".format(males, females))
         print("Your company is currently {}% males and {}% females".format(perc_of_males, perc_of_females))
+        print()
         return More_Actions(dict_of_employees)
     
     # References for formatted string syntax numbers 3,4, and 5
@@ -145,12 +163,12 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         while salary.isdigit() != True or int(salary) > 99999999:
             if salary.isdigit() != True:
                 print()
-                print("Salary must be a number.")
+                print("Invalid Entry!")
                 salary = input("Salary: ") 
                 print()
             elif salary.isdigit() and int(salary) > 99999999:
                 print()
-                print("Salary must be less than that.")
+                print("Invalid Entry! Salary must be less than that.")
                 salary = input("Salary: ") 
                 print()
 
@@ -167,6 +185,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         list_of_timestamps.sort() # O(nlogn) sort the time from smallest to greatest
         list_of_timestamps.reverse() # reverse the list => greates to smallest (newest to oldest employee)
 
+        print("Employees sorted from new to old.")
+        print()
         for i in list_of_timestamps: #O(n**2) loop over the timestamps
             for j in dict_of_employees: # loop over the IDs of the main dictionary
                 if i == dict_of_employees[j]["date"]: # print the details
@@ -197,7 +217,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
                     new_salary = input("New Salary: ")
 
             dict_of_employees[employee]["salary"] = new_salary # store new value of salary
-        print(dict_of_employees)
+        # print(dict_of_employees)
         return More_Actions(dict_of_employees)
     
     def Remove_Employee(dict_of_employees): # Time Complexity => O(n) where n is the number of times it takes the user to input correctly
@@ -211,7 +231,9 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
             employee = input("Choose employee ID: ")
         if employee in list_of_keys:
             dict_of_employees.pop(employee)
-        print(dict_of_employees)
+            print("Employee removed.")
+        # print(dict_of_employees)
+        print()
         return More_Actions(dict_of_employees)
     
     def Raise_Salary(dict_of_employees): # O(n) where n is the number of possible errors
@@ -245,8 +267,12 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         dict_of_employees[employee]["salary"] = str(new_salary)
         print("{}'s salary is now {}$.".format(name, new_salary))
         print()
-        print(dict_of_employees)
+        # print(dict_of_employees)
         return More_Actions(dict_of_employees)
+    
+    # def Exit(dict_of_employees):
+
+
     
     # print(dict_of_employees)
     # print(list_of_names)
@@ -285,6 +311,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Remove_Employee(dict_of_employees)
     elif action == "6":
         return Raise_Salary(dict_of_employees)
+    # elif action == "7":
+    #     return Exit(dict_of_employees)
     
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
