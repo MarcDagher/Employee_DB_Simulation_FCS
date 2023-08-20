@@ -9,7 +9,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
   file = open(file_path, "r") 
 
   ## STEP 2: Store file's info in dictionary
-  list_of_data = [] # list of nested lists storing distributed info of each employee. [empID,name,time,gender,salary]
+  list_of_data = [] # Nested list storing distributed info of each employee. [[empID,name,time,gender,salary]]
 
   for i in file:
       new_line_1 = i.strip("\n") # line with no \n
@@ -155,14 +155,15 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
                 print()
 
         dict_of_employees[id] = {'name': name, 'date': timestamp, 'gender': gender, 'salary': salary} # add emp to dictionary
+        print()
         return More_Actions(dict_of_employees)
     
-    def Display_Employees(dict_of_employees): # O(n**2) where n is the length of the entire list, which worst case looping over the whole list
+    def Display_Employees(dict_of_employees): # O(n**2) where n is the length of the entire list. worst case is looping over the whole list in both loops line 170
         list_of_timestamps = [] # collect the time of joining of each employee
         for i in dict_of_employees: # O(n)
             time = dict_of_employees[i]["date"]
             list_of_timestamps.append(time) 
-        # time complexity reference number 6
+        # time complexity reference file number 6
         list_of_timestamps.sort() # O(nlogn) sort the time from smallest to greatest
         list_of_timestamps.reverse() # reverse the list => greates to smallest (newest to oldest employee)
 
@@ -213,6 +214,40 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         print(dict_of_employees)
         return More_Actions(dict_of_employees)
     
+    def Raise_Salary(dict_of_employees): # O(n) where n is the number of possible errors
+        employee = input("Choose employee ID: ") # choose ID => O(n)
+        list_of_keys = dict_of_employees.keys()
+
+        while employee not in list_of_keys: # Check if ID is in the list of keys => O(n) worst case is that user doesnt get it right
+            print("Employee ID not found.")
+            print("Make sure to input the right ID.")
+            print()
+            employee = input("Choose employee ID: ")
+        current_salary = dict_of_employees[employee]["salary"]
+        name = dict_of_employees[employee]["name"]
+        print("{}'s salary is {}$.".format(name, current_salary))
+        print()
+
+        percentage = input("Input percentage of raise: ") # O(n) n is ammount of errors
+        while percentage.isdigit() == False or int(percentage) > 1000: 
+            if percentage.isdigit() == False:
+                print("Invalid entry!")
+                print()
+                percentage = input("Input percentage of raise: ")
+                print()
+            elif int(percentage) > 1000:
+                print("Can't be more than 1000.")
+                print()
+                percentage = input("Input percentage of raise: ")
+                print()
+
+        new_salary = (float(current_salary) * (float(percentage)/100)) + float(current_salary)
+        dict_of_employees[employee]["salary"] = str(new_salary)
+        print("{}'s salary is now {}$.".format(name, new_salary))
+        print()
+        print(dict_of_employees)
+        return More_Actions(dict_of_employees)
+    
     # print(dict_of_employees)
     # print(list_of_names)
     print("Welcome Admin!")  # display menu items
@@ -248,6 +283,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Change_Employee_Salary(dict_of_employees)
     elif action == "5":
         return Remove_Employee(dict_of_employees)
+    elif action == "6":
+        return Raise_Salary(dict_of_employees)
     
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
