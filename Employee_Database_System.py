@@ -29,6 +29,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
       salary = i[4]
       dictionary_of_employees[id] = {"name" : name, "date" : date, "gender" : gender, "salary" : salary}
   print("File saved.")
+#   print(dictionary_of_employees)
   file.close() # Close file
   print()
   print("Enter Username and Password")
@@ -48,6 +49,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
     while username != "admin" and username not in list_of_names and count < 5: # user errors (not found, more than 5 tries) note: admin isnt part of the file so we used and not or
         count += 1
         print("User not found!")
+        print()
         username = input("Username: ")
 
     if count == 5:
@@ -63,6 +65,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
         while password != "admin123123" and count < 5: #if worng password and exceeded limit
             print("wrong password")
             count += 1
+            print()
             password = input("Password: ")
         if count == 5: 
             print("Too many tries.")
@@ -83,11 +86,87 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             print("Try again.")
             print()
             return GreetUser(dict_of_employees)
-        if password == "":
-            print("Hi,", username) ############## STEP 4: RETURN USER'S MENU ##############
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
+        
+        if password == "": # if password is correct
+            for i in dict_of_employees:
+                if dict_of_employees[i]["name"] == username:
+                    id = i
+                    if dict_of_employees[i]["gender"] == "male" or dict_of_employees[i]["gender"] == "Male":
+                        pronoun = "Mr."
+                    elif dict_of_employees[i]["gender"] == "Female" or dict_of_employees[i]["gender"] == "female":
+                        pronoun = "Ms."
 
+            print("Hi,", pronoun, username) ############## STEP 4: RETURN USER'S MENU ##############
+            return User_Menu(dict_of_employees, id)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def User_Menu(dict_of_employees, id):
+    def More_Actions(dict_of_employees, id): # O(n ** 2) where n is the number of times it takes the user to answer correctly
+        more_actions = input("Would you like to do anything else? ")
+        while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no": # O(n)
+            print()
+            print("Wrong entry! Answer yes or no.")
+            more_actions = input("Would you like to do anything else? ")
+        
+        if more_actions == "Yes" or more_actions == "yes":
+            print()
+            return User_Menu(dict_of_employees, id)
+        
+        elif more_actions == "No" or more_actions == "no":
+            print()
+            confirm = input("Are you sure you want to exit? ")
+            while confirm != "Yes" and confirm != "yes" and confirm != "No" and confirm != "no": # nested O(n)
+                print()
+                print("Wrong entry! Answer yes or no.")
+                confirm = input("Are you sure you want to exit? ")
+        ## Reference page number 7
+            if confirm == "Yes" or confirm == "yes":
+                print()
+                print("Changes Saved.")
+                print("Goodbye :)")
+                print("exit and save code") ##### exit and save file########################
+            elif confirm == "No" or confirm == "no":
+                print()
+                return User_Menu(dict_of_employees, id)
+            
+    def Check_My_Salary(dict_of_employees, id): # O(1) complexity
+        print()
+        print("Your salary is {}$.".format(dict_of_employees[id]["salary"]))
+        return More_Actions(dict_of_employees, id)
+    # Reference file number 10
+    def Exit(dict_of_employees, id):# O(1) Complexity
+        time_file = open("timestamps.txt", "w")
+        now = datetime.now()
+        date = now.strftime("%d-%B-%Y")
+        time = now.strftime("%I:%M %p")
+        time_file.write("{} logged in on {} at {}".format(dict_of_employees[id]["name"], date, time))
+        print()
+        print("Login timestamp saved on timestamps.txt file.")
+        print("Goodbye :)")
+        
+    print()
+    print("""
+        1. Check My Salary
+        2. Exit
+          """)
+    print()
+    action = input("What would you like to do? ") # user input command 
+    while action.isdigit() == False or int(action) not in range(1, 3) : # if choice is not a digit or not in the menu O(n)
+        if action.isdigit() == False:
+            print("Please choose a number between 1 and 2.")
+            print()
+            action = input("What would you like to do? ")
+        elif int(action) not in range(1, 3):
+            print("Make sure the number chosen is in the menu list!")
+            print()
+            action = input("What would you like to do? ")
+    if action == "1":
+        return Check_My_Salary(dict_of_employees, id)
+    elif action == "2":
+        return Exit(dict_of_employees, id)
+
+
+def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
+    
     def More_Actions(dict_of_employees): # O(n ** 2) where n is the number of times it takes the user to answer correctly
         more_actions = input("Would you like to do anything else? ")
         while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no": # O(n)

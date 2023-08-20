@@ -162,3 +162,26 @@ dict_of_employees = {
 'emp016': {'name': 'wjohnson', 'date': '20220917', 'gender': 'male', 'salary': '14500'}, 'emp017': {'name': 'mgarcia', 'date': '20220818', 'gender': 'female', 'salary': '12800'}, 'emp018': {'name': 'kparker', 'date': '20220819', 'gender': 'male', 'salary': '11200'}, 'emp019': {'name': 'nanderson', 'date': '20220820', 'gender': 'male', 'salary': '10300'}, 'emp020': {'name': 'amiller', 'date': '20220821', 'gender': 'female', 'salary': '12900'}, 'emp021': {'name': 'ssmith', 'date': '20220822', 'gender': 'female', 'salary': '13800'}, 'emp022': {'name': 'bbrown', 'date': '20130823', 'gender': 'male', 'salary': '15500'}, 'emp023': {'name': 'rmartinez', 'date': '20220824', 'gender': 'female', 'salary': '14200'}, 'emp024': {'name': 'cwright', 'date': '20220825', 'gender': 'male', 'salary': '14800'}, 'emp025': {'name': 'ajackson', 'date': '20220826', 'gender': 'female', 'salary': '11700'}, 'emp026': {'name': 'mgonzalez', 'date': '20220827', 'gender': 'female', 'salary': '13300'}, 'emp027': {'name': 'djones', 'date': '20220828', 'gender': 'male', 'salary': '15800'}, 'emp028': {'name': 'bsmith', 'date': '20220829', 'gender': 'male', 'salary': '11900'}, 'emp029': {'name': 'erobinson', 'date': '20220830', 'gender': 'female', 'salary': '12300'}, 'emp030': {'name': 'cgonzalez', 'date': '20220831', 'gender': 'female', 'salary': '13700'}
 }
 
+def Exit(dict_of_employees, id):
+        time_file = open("timestamps.txt", "w")
+        now = datetime.now()
+        date = now.strftime("%d-%B-%Y")
+        time = now.strftime("%I:%M %p")
+        time_file.write("{} logged in on {} at {}".format(dict_of_employees[id]["name"], date, time))
+        print()
+        print("Login timestamp saved on timestamps.txt file.")
+        print("Goodbye :)")
+
+
+
+# Exit(dict_of_employees, "emp08")
+
+# now = datetime.now()
+# timestamp = now.strftime("%Y%m%d")
+now = datetime.now()
+date = now.strftime("%d-%B-%Y")
+time = now.strftime("%I:%M %p")
+
+print("now: ", now)
+print("date: ", date)
+print("time: ", time)
