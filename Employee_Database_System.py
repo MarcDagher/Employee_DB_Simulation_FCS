@@ -4,6 +4,9 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
 
   ## STEP 1: Receive input file and OPEN
   path = input("Insert Employee File location: ") # determine the file's path
+
+  # reference folder number 8
+  global file_path # in order to call file_path in exit function
   file_path = path + ".txt" # add the file's extention to complete path
 
   file = open(file_path, "r") 
@@ -33,7 +36,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
 
 # STEP 3: GREET USER and TAKE USERNAME + PASSWORD
 
-def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Complexity O(n) where n is the input username and pass
+def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Complexity O(n**2) where n is the input of username and pass
     list_of_names = [] # store names
 
     for i in dict_of_employees:
@@ -85,9 +88,9 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
 
-    def More_Actions(dict_of_employees): # O(n) where n is the number of times it takes the user to answer correctly
+    def More_Actions(dict_of_employees): # O(n ** 2) where n is the number of times it takes the user to answer correctly
         more_actions = input("Would you like to do anything else? ")
-        while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no":
+        while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no": # O(n)
             print()
             print("Wrong entry! Answer yes or no.")
             more_actions = input("Would you like to do anything else? ")
@@ -99,23 +102,23 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         elif more_actions == "No" or more_actions == "no":
             print()
             confirm = input("Are you sure you want to exit? ")
-            while confirm != "Yes" and confirm != "yes" and confirm != "No" and confirm != "no":
+            while confirm != "Yes" and confirm != "yes" and confirm != "No" and confirm != "no": # nested O(n)
                 print()
                 print("Wrong entry! Answer yes or no.")
                 confirm = input("Are you sure you want to exit? ")
-        
+        ## Reference page number 7
             if confirm == "Yes" or confirm == "yes":
                 print()
                 print("Changes Saved.")
                 print("Goodbye :)")
-                print("exit and save code") ##### exit and save file
+                print("exit and save code") ##### exit and save file########################
             elif confirm == "No" or confirm == "no":
                 print()
                 return AdminMenu(dict_of_employees)
 
                 
 
-    def Display_Stats(dict_of_employees): # O(1) since user doesn't have any inputs in this funcction so its a constant. Worst case is if the dictionary is super long.
+    def Display_Stats(dict_of_employees): # O(n) since user doesn't have any inputs in this funcction so its a constant. Worst case is if the dictionary is super long.
         males = 0
         females = 0
         total = len(dict_of_employees)
@@ -138,7 +141,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         timestamp = now.strftime("%Y%m%d")
 
         name = input("Employee name: ")
-        while len(name) > 20 or name.isdigit():
+        while len(name) > 20 or name.isdigit(): #O(n)
             if len(name) > 20:
                 print()
                 print("Name should be maximum 20 characters.")
@@ -152,7 +155,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
 
 
         gender = input("Gender: [Answer male or female] ")
-        while gender != "Male" and gender != "male" and gender != "Female" and gender != "female":
+        while gender != "Male" and gender != "male" and gender != "Female" and gender != "female":# O(n)
             print()
             print("Invalid entry! Enter male or female.")
             gender = input("Gender: [Answer male or female] ")
@@ -160,7 +163,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
 
 
         salary = input("Salary: ") 
-        while salary.isdigit() != True or int(salary) > 99999999:
+        while salary.isdigit() != True or int(salary) > 99999999:  # O(n)
             if salary.isdigit() != True:
                 print()
                 print("Invalid Entry!")
@@ -199,7 +202,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         print()
         return More_Actions(dict_of_employees)
     
-    def Change_Employee_Salary(dict_of_employees): # O(n) where n is the number of times it takes the user to give  the correct input
+    def Change_Employee_Salary(dict_of_employees): # O(n**2) where n is the number of times it takes the user to give  the correct input
         employee = input("Choose employee ID: ") # choose ID => O(n)
         list_of_keys = dict_of_employees.keys()
 
@@ -215,6 +218,9 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
                     print()
                     print("Invalid entry!")
                     new_salary = input("New Salary: ")
+            
+            print("Done.")
+            print()
 
             dict_of_employees[employee]["salary"] = new_salary # store new value of salary
         # print(dict_of_employees)
@@ -270,8 +276,16 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         # print(dict_of_employees)
         return More_Actions(dict_of_employees)
     
-    # def Exit(dict_of_employees):
+    def Exit(dict_of_employees, file_path): # O(n) => where n is the length of the dictionary
+        # print(file_path)
+        adjusted_file = open(file_path, "w") # "w" to overwrite existing lines and add new ones
+        for i in dict_of_employees:
+            adjusted_file.write("{}, {}, {}, {}, {} \n".format(i,dict_of_employees[i]["name"], dict_of_employees[i]["date"], dict_of_employees[i]["gender"], dict_of_employees[i]["salary"]))
 
+        adjusted_file.close()
+        print()
+        print("Changes have been saved!")
+        print("Goodbye :)")
 
     
     # print(dict_of_employees)
@@ -287,8 +301,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         6. Raise Salary
         7. Exit""")
     print()
-    action = input("What would you like to do? ") # user input command
-    while action.isdigit() == False or int(action) not in range(1, 8) : # if choice is not a digit or not in the menu
+    action = input("What would you like to do? ") # user input command 
+    while action.isdigit() == False or int(action) not in range(1, 8) : # if choice is not a digit or not in the menu O(n)
         if action.isdigit() == False:
             print("Please choose a number between 1 and 7.")
             print()
@@ -311,8 +325,8 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return Remove_Employee(dict_of_employees)
     elif action == "6":
         return Raise_Salary(dict_of_employees)
-    # elif action == "7":
-    #     return Exit(dict_of_employees)
+    elif action == "7":
+        return Exit(dict_of_employees, file_path)
     
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
