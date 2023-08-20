@@ -199,9 +199,11 @@ list_of_data = [] # Nested list storing distributed info of each employee. [[emp
 
 for i in file.readlines():
       if i.strip():
-        new_line_1 = i.strip("\n") # line with no \n
+        new_line_1 = i.strip("\n ") # line with no \n
         new_line_2 = new_line_1.split(", ") # remove commas and turn string into a list
-        list_of_data.append(new_line_2) # store each line
+        # list_of_data.append(new_line_2) # store each line
+        print(new_line_2)
+
 
 file.close() # Close file
 

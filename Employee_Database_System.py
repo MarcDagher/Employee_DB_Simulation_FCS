@@ -23,8 +23,8 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
   list_of_data = [] # Nested list storing distributed info of each employee. [[empID,name,time,gender,salary]]
 
   for i in file.readlines():
-      if i.strip():
-        new_line_1 = i.strip("\n") # line with no \n
+      if i.strip(): 
+        new_line_1 = i.strip("\n ") # line with no \n and space
         new_line_2 = new_line_1.split(", ") # remove commas and turn string into a list
         list_of_data.append(new_line_2) # store each line
 
@@ -64,7 +64,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
     if count == 5:
         print("Too many tries...")
         print("Goodbye :)")
-        print()
+        return 
 
     password = input("Password: ") # ask for password
     if username == "admin": # if admin
@@ -77,7 +77,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
         if count == 5: 
             print("Too many tries.")
             print("Goodbye :)")
-            print()
+            return
 
         if password == "admin123123":
             return AdminMenu(dict_of_employees) ############# STEP 4: RETURN ADMIN'S MENU ############
@@ -129,7 +129,6 @@ def User_Menu(dict_of_employees, id):
             if confirm == "Yes" or confirm == "yes":
                 print()
                 print("Changes Saved.")
-                print("Goodbye :)")
                 Exit(dict_of_employees, id) ##### exit and save file#####
             elif confirm == "No" or confirm == "no":
                 print()
