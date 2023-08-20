@@ -1,7 +1,7 @@
 from datetime import datetime
-import sys
+
 # file handling reference 1 and 2
-def InputPath(): # Time Complexity is O(n) => the code depends on the user's file input
+def InputPath(): # Time Complexity is O(n) => where n is the number of user's errors
 
   ## STEP 1: Receive input file and OPEN
   path = input("Insert Employee File location without extension: ") # determine the file's path
@@ -13,7 +13,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
   # Reference file number 12
   try:
     file = open(file_path, "r") 
-  except OSError as e:
+  except OSError:
       print("Please enter a valid file.")
       print()
       return InputPath()
@@ -107,7 +107,7 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             print("Hi,", pronoun, username) ############## STEP 4: RETURN USER'S MENU ##############
             return User_Menu(dict_of_employees, id)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def User_Menu(dict_of_employees, id):
+def User_Menu(dict_of_employees, id): # O(n) * O(function chosen) where is is the user's number of errors
     def More_Actions(dict_of_employees, id): # O(n ** 2) where n is the number of times it takes the user to answer correctly
         more_actions = input("Would you like to do anything else? ")
         while more_actions != "Yes" and more_actions != "yes" and more_actions != "No" and more_actions != "no": # O(n)
@@ -149,7 +149,7 @@ def User_Menu(dict_of_employees, id):
         print()
         print("Login timestamp saved on timestamps.txt file.")
         print("Goodbye :)")
-        
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END of SUB-FUNCTIONS   
     print()
     print("""
         1. Check My Salary
@@ -172,7 +172,7 @@ def User_Menu(dict_of_employees, id):
         return Exit(dict_of_employees, id)
 
 
-def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_actions
+def AdminMenu(dict_of_employees): # O(n) * O(function chosen) where n is the user's input to more_actions
     
     def More_Actions(dict_of_employees): # O(n ** 2) where n is the number of times it takes the user to answer correctly
         more_actions = input("Would you like to do anything else? ")
@@ -219,7 +219,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         return More_Actions(dict_of_employees)
     
     # References for formatted string syntax numbers 3,4, and 5
-    def Add_Employee(dict_of_employees): # O(n) where n is the number of tries it takes the user to pass
+    def Add_Employee(dict_of_employees): # O(3n) = O(n) where n is the number of tries it takes the user to pass
         id = 'emp{0:03d}'.format(len(dict_of_employees) + 1) 
         now = datetime.now()
         timestamp = now.strftime("%Y%m%d")
