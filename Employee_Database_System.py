@@ -22,6 +22,7 @@ def InputPath(): # Time Complexity is O(n) => the code depends on the user's fil
   ## STEP 2: Store file's info in dictionary
   list_of_data = [] # Nested list storing distributed info of each employee. [[empID,name,time,gender,salary]]
 
+    # Reference file number 13
   for i in file.readlines():
       if i.strip(): 
         new_line_1 = i.strip("\n ") # line with no \n and space
