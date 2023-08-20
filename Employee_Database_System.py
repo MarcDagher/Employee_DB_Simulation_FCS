@@ -1,23 +1,32 @@
 from datetime import datetime
+import sys
 # file handling reference 1 and 2
 def InputPath(): # Time Complexity is O(n) => the code depends on the user's file input
 
   ## STEP 1: Receive input file and OPEN
-  path = input("Insert Employee File location: ") # determine the file's path
+  path = input("Insert Employee File location without extension: ") # determine the file's path
 
   # reference folder number 8
   global file_path # in order to call file_path in exit function
   file_path = path + ".txt" # add the file's extention to complete path
 
-  file = open(file_path, "r") 
+  # Reference file number 12
+  try:
+    file = open(file_path, "r") 
+  except OSError as e:
+      print("Please enter a valid file.")
+      print()
+      return InputPath()
+      
 
   ## STEP 2: Store file's info in dictionary
   list_of_data = [] # Nested list storing distributed info of each employee. [[empID,name,time,gender,salary]]
 
-  for i in file:
-      new_line_1 = i.strip("\n") # line with no \n
-      new_line_2 = new_line_1.split(", ") # remove commas and turn string into a list
-      list_of_data.append(new_line_2) # store each line
+  for i in file.readlines():
+      if i.strip():
+        new_line_1 = i.strip("\n") # line with no \n
+        new_line_2 = new_line_1.split(", ") # remove commas and turn string into a list
+        list_of_data.append(new_line_2) # store each line
 
   dictionary_of_employees = {}
 
@@ -54,10 +63,8 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
 
     if count == 5:
         print("Too many tries...")
-        print("Try again.")
+        print("Goodbye :)")
         print()
-        return GreetUser(dict_of_employees)
-
 
     password = input("Password: ") # ask for password
     if username == "admin": # if admin
@@ -69,9 +76,9 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
             password = input("Password: ")
         if count == 5: 
             print("Too many tries.")
-            print("Try again.")
+            print("Goodbye :)")
             print()
-            return GreetUser(dict_of_employees)
+
         if password == "admin123123":
             return AdminMenu(dict_of_employees) ############# STEP 4: RETURN ADMIN'S MENU ############
         
@@ -80,12 +87,12 @@ def GreetUser(dict_of_employees): # Worst case answering wrong 5 times. Time Com
         while password != "" and count < 5:
             print("Wrong password!")
             count += 1
+            print()
             password = input("Password: ")
         if count == 5:
             print("Too many tries.")
-            print("Try again.")
+            print("Goodbye :)")
             print()
-            return GreetUser(dict_of_employees)
         
         if password == "": # if password is correct
             for i in dict_of_employees:
@@ -123,7 +130,7 @@ def User_Menu(dict_of_employees, id):
                 print()
                 print("Changes Saved.")
                 print("Goodbye :)")
-                print("exit and save code") ##### exit and save file########################
+                Exit(dict_of_employees, id) ##### exit and save file#####
             elif confirm == "No" or confirm == "no":
                 print()
                 return User_Menu(dict_of_employees, id)
@@ -188,9 +195,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         ## Reference page number 7
             if confirm == "Yes" or confirm == "yes":
                 print()
-                print("Changes Saved.")
-                print("Goodbye :)")
-                print("exit and save code") ##### exit and save file########################
+                return Exit(dict_of_employees, file_path) ##### exit and save file #######
             elif confirm == "No" or confirm == "no":
                 print()
                 return AdminMenu(dict_of_employees)
@@ -334,15 +339,15 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
         name = dict_of_employees[employee]["name"]
         print("{}'s salary is {}$.".format(name, current_salary))
         print()
-
+        ## Solution for float number reference file number 11
         percentage = input("Input percentage of raise: ") # O(n) n is ammount of errors
-        while percentage.isdigit() == False or int(percentage) > 1000: 
-            if percentage.isdigit() == False:
+        while percentage.replace(".","",1).isdigit() == False or float(percentage) > 1000: 
+            if percentage.replace(".","",1).isdigit() == False:
                 print("Invalid entry!")
                 print()
                 percentage = input("Input percentage of raise: ")
                 print()
-            elif int(percentage) > 1000:
+            elif float(percentage) > 1000:
                 print("Can't be more than 1000.")
                 print()
                 percentage = input("Input percentage of raise: ")
@@ -407,5 +412,7 @@ def AdminMenu(dict_of_employees): # O(n) where n is the user's input to more_act
     elif action == "7":
         return Exit(dict_of_employees, file_path)
     
+# ~~~~~~ END OF FUNCTIONS ~~~~~~~    
+
 dict_of_employees = InputPath()
 GreetUser(dict_of_employees)
